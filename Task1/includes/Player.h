@@ -16,7 +16,7 @@ enum class MovementDir
 
 struct Player : public Image
 {
-  explicit Player(Point pos = {.x = 10, .y = 10}) :
+  explicit Player(Point pos = {.x = 10, .y = 10}) : Image("resources/frames/knight_m_idle_anim_f0.png"),
                  coords(pos), old_coords(coords) {};
 
   bool Moved() const;
@@ -25,6 +25,7 @@ struct Player : public Image
   bool look[5] = {false, false, false, true, true};
   void ProcessInput(MovementDir dir, GameMap &map);
   void Draw(Image &screen, Image &backup);
+  void CheckPlayer(GameMap &map);
   void CheckAround(std::vector<GameObject> &chosen);
   void OtherLook(int n);
   Point coords {.x = 10, .y = 10};

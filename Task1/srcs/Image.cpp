@@ -76,6 +76,16 @@ void Image::Read_img(const std::string &a_path)
     std::cout << "image can't be open" << std::endl;
 }
 
+Pixel Image::mix(Pixel bufPixel, Pixel picPixel)
+{
+  picPixel.r = picPixel.a / 255.0 * (picPixel.r - bufPixel.r) + bufPixel.r;
+  picPixel.g = picPixel.a / 255.0 * (picPixel.g - bufPixel.g) + bufPixel.g;
+  picPixel.b = picPixel.a / 255.0 * (picPixel.b - bufPixel.b) + bufPixel.b;
+  picPixel.a = 255;
+
+  return picPixel;
+}
+
 /*Image::~Image()
 {
   if(self_allocated)

@@ -22,6 +22,7 @@ struct Image
   Pixel* Data()        { return data; }
 
   Pixel GetPixel(int x, int y) { return data[width * y + x];}
+  Pixel mix(Pixel bufPixel, Pixel picPixel);
   void  PutPixel(int x, int y, const Pixel &pix) { data[width* y + x] = pix; }
   void  Draw(Image &screen);
   void  Read_img(const std::string &a_path);
@@ -36,7 +37,6 @@ private:
   Pixel *data = nullptr;
   bool self_allocated = false;
 };
-
 
 
 #endif //MAIN_IMAGE_H

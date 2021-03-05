@@ -14,12 +14,13 @@ public:
     bool screen_next_lvl = false;
     bool screen_end_lvl = false;
     bool screen_dead = false;
+    Image backup;
 
     GameMap() {}
 
-    void loadFile(const char *path, Point *start);
+    void loadFile(const char *path, Point *start, std::vector<Image> &anima);
     
-    void initMap(std::vector<std::vector<char>> tile_data, Point *start);
+    void initMap(std::vector<std::vector<char>> tile_data, Point *start, std::vector<Image> &anima);
 
 };
 
@@ -29,10 +30,12 @@ public:
     std::vector<GameMap> Maps;
     bool screen_load = true;
     int level = 0;
+    int timer = 0;
 
     Game() {}
     
     void Render(GameMap &map, Image &screen);
+    void Update(GameMap &map, Image &screen, int i);
 };
 
 #endif

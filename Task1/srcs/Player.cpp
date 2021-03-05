@@ -18,8 +18,8 @@ void Player::OtherLook(int n)
 
 bool Player::CheckCollisons(GameObject &obj)
 {
-  bool x_coll = coords.x + Width() >= obj.position.x && obj.position.x + obj.Width() >= coords.x;
-  bool y_coll = coords.y + Width() >= obj.position.y && obj.position.y + obj.Height() >= coords.y;
+  bool x_coll = coords.x + Width() >= obj.position.x && obj.position.x + obj.width >= coords.x;
+  bool y_coll = coords.y + Width() >= obj.position.y && obj.position.y + obj.height >= coords.y;
 
   return x_coll && y_coll;
 }
@@ -43,9 +43,8 @@ void Player::CheckAround(std::vector<GameObject> &chosen)
   }
 }
 
-void Player::ProcessInput(MovementDir dir, GameMap &map)
+void Player::CheckPlayer(GameMap &map)
 {
-  int move_dist = move_speed * 1;
   std::vector<GameObject> chosen;
 
   for (GameObject &obj : map.Objects)
@@ -54,12 +53,12 @@ void Player::ProcessInput(MovementDir dir, GameMap &map)
       {
         if (obj.is_wall)
           chosen.push_back(obj);
-        if (obj.is_danger && coords.y >= obj.position.y && coords.y <= obj.position.y + 3 * obj.Width()/4 &&
+        if (obj.is_danger && coords.y >= obj.position.y && coords.y <= obj.position.y + 3 * obj.width/4 &&
             (coords.x >= obj.position.x || coords.x + Width()/2 >= obj.position.x) && 
-            (coords.x <= obj.position.x + obj.Width()/2 || coords.x + Width()/2 <= obj.position.x + obj.Width()))
+            (coords.x <= obj.position.x + obj.width/2 || coords.x + Width()/2 <= obj.position.x + obj.width))
           map.screen_dead = true;
-        if (obj.is_door && coords.x >= obj.position.x && coords.x <= obj.position.x + Width() && 
-            coords.y >= obj.position.y && coords.y <= obj.position.y + Width())
+        if (obj.is_door && coords.x >= obj.position.x && coords.x <= obj.position.x + obj.width && 
+            coords.y >= obj.position.y && coords.y <= obj.position.y + obj.width)
           map.screen_next_lvl = true;
       }
     }
@@ -68,7 +67,13 @@ void Player::ProcessInput(MovementDir dir, GameMap &map)
     CheckAround(chosen);
     chosen.clear();
   }
+}
 
+void Player::ProcessInput(MovementDir dir, GameMap &map)
+{
+  int move_dist = move_speed * 1;
+  
+  CheckPlayer(map);
   switch(dir)
   {
     case MovementDir::UP:
@@ -119,16 +124,6 @@ void Player::ProcessInput(MovementDir dir, GameMap &map)
   
 }
 
-Pixel mix(Pixel bufPixel, Pixel picPixel)
-{
-  picPixel.r = picPixel.a / 255.0 * (picPixel.r - bufPixel.r) + bufPixel.r;
-  picPixel.g = picPixel.a / 255.0 * (picPixel.g - bufPixel.g) + bufPixel.g;
-  picPixel.b = picPixel.a / 255.0 * (picPixel.b - bufPixel.b) + bufPixel.b;
-  picPixel.a = 255;
-
-  return picPixel;
-}
-
 void Player::Draw(Image &screen, Image &backup)
 {
   if(Moved())
@@ -151,7 +146,7 @@ void Player::Draw(Image &screen, Image &backup)
       if (look[3] || ((look[0] || look[1]) && look[4]))
         screen.PutPixel(x, y, mix(screen.GetPixel(x, y), GetPixel(x - old_coords.x, Height() - (y - old_coords.y) - 1 )));
       else if (look[2] || (look[0] || look[1] && !look[4]))
-        screen.PutPixel(x, y, mix(screen.GetPixel(x, y), GetPixel(Width() - (x - old_coords.x), Height() - (y - old_coords.y) - 1 )));
+        screen.PutPixel(x, y, mix(screen.GetPixel(x, y), GetPixel(Width() - (x - old_coords.x) - 1, Height() - (y - old_coords.y) - 1 )));
     }
   }
 }
