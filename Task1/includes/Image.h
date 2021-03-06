@@ -18,13 +18,15 @@ struct Image
   int Width()    const { return width; }
   int Height()   const { return height; }
   int Channels() const { return channels; }
+  float k = 0;
   size_t Size()  const { return size; }
   Pixel* Data()        { return data; }
 
   Pixel GetPixel(int x, int y) { return data[width * y + x];}
   Pixel mix(Pixel bufPixel, Pixel picPixel);
+  Pixel ToFromDark(Pixel bufPixel, float k);
   void  PutPixel(int x, int y, const Pixel &pix) { data[width* y + x] = pix; }
-  void  Draw(Image &screen);
+  void  Draw(Image &screen, float k);
   void  Read_img(const std::string &a_path);
 
   //~Image();

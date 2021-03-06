@@ -126,7 +126,8 @@ void Player::ProcessInput(MovementDir dir, GameMap &map)
 
 void Player::Draw(Image &screen, Image &backup)
 {
-  if(Moved())
+  bool mv_cond = Moved();
+  if(mv_cond)
   {
     for(int y = old_coords.y; y < old_coords.y + Height(); ++y)
     {
@@ -137,6 +138,8 @@ void Player::Draw(Image &screen, Image &backup)
     }
     old_coords = coords;
   }
+  if (num_anim == 4)
+    num_anim = 0;
 
   
   for(int y = coords.y; y < coords.y + Height(); ++y)
@@ -144,9 +147,21 @@ void Player::Draw(Image &screen, Image &backup)
     for(int x = coords.x; x < coords.x + Width(); ++x)
     {
       if (look[3] || ((look[0] || look[1]) && look[4]))
-        screen.PutPixel(x, y, mix(screen.GetPixel(x, y), GetPixel(x - old_coords.x, Height() - (y - old_coords.y) - 1 )));
+        if (mv_cond)
+          screen.PutPixel(x, y, mix(screen.GetPixel(x, y), player_run[num_anim].GetPixel(x - old_coords.x, Height() - (y - old_coords.y) - 1 )));
+        else
+        {
+          screen.PutPixel(x, y, backup.GetPixel(x, y));
+          screen.PutPixel(x, y, mix(screen.GetPixel(x, y), player_idle[num_anim].GetPixel(x - old_coords.x, Height() - (y - old_coords.y) - 1 )));
+        }
       else if (look[2] || (look[0] || look[1] && !look[4]))
-        screen.PutPixel(x, y, mix(screen.GetPixel(x, y), GetPixel(Width() - (x - old_coords.x) - 1, Height() - (y - old_coords.y) - 1 )));
+        if (mv_cond)
+          screen.PutPixel(x, y, mix(screen.GetPixel(x, y), player_run[num_anim].GetPixel(Width() - (x - old_coords.x) - 1, Height() - (y - old_coords.y) - 1 )));
+        else
+        {
+          screen.PutPixel(x, y, backup.GetPixel(x, y));
+          screen.PutPixel(x, y, mix(screen.GetPixel(x, y), player_idle[num_anim].GetPixel(Width() - (x - old_coords.x) - 1, Height() - (y - old_coords.y) - 1 )));
+        }
     }
-  }
+  }  
 }

@@ -28,9 +28,11 @@ struct Player : public Image
   void CheckPlayer(GameMap &map);
   void CheckAround(std::vector<GameObject> &chosen);
   void OtherLook(int n);
+  std::vector<Image> player_run;
+  std::vector<Image> player_idle;
   Point coords {.x = 10, .y = 10};
   //std::vector<std::string> mv_path;
-  //int num_anim = 0;
+  int num_anim = 0;
   //int time = 0;
 
 private:

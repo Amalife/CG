@@ -54,13 +54,24 @@ int Image::Save(const std::string &a_path)
   return 0;
 }
 
-void Image::Draw(Image &screen)
+Pixel Image::ToFromDark(Pixel bufPixel, float k)
+{
+  Pixel chgPixel;
+  chgPixel.r = bufPixel.r * k;
+  chgPixel.g = bufPixel.g * k;
+  chgPixel.b = bufPixel.b * k;
+  chgPixel.a = bufPixel.a * k;
+
+  return chgPixel;
+}
+
+void Image::Draw(Image &screen, float k)
 {
   for (int y = 0; y < Height(); ++y)
   {
     for (int x = 0; x < Width() ; ++x)
     {
-      screen.PutPixel(x, y, GetPixel(x, Height() - y - 1));
+      PutPixel(x, y, ToFromDark(screen.GetPixel(x, y), k));
     }
   }  
 }
