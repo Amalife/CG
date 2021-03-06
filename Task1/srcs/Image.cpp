@@ -7,6 +7,7 @@
 
 #include <iostream>
 
+constexpr GLsizei WINDOW_WIDTH = 640, WINDOW_HEIGHT = 640;
 
 Image::Image(const std::string &a_path)
 {
@@ -95,6 +96,37 @@ Pixel Image::mix(Pixel bufPixel, Pixel picPixel)
   picPixel.a = 255;
 
   return picPixel;
+}
+
+void Image::TakePix(int x_pos, int y_pos, Image &screen)
+{
+  if (y_pos - 16 * 10 < 0)
+    y_pos = 16 * 10;
+  if (x_pos - 16 * 10 < 0)
+    x_pos = 16 * 10;
+  if (y_pos + 16 * 10 > screen.Height())
+    y_pos = screen.Height() - 16 * 10;
+  if (x_pos + 16 * 10 > screen.Width())
+    x_pos = screen.Width() - 16 * 10;
+
+  for (int y = y_pos - 16 * 10; y < y_pos + 16 * 10; y++)
+    for (int x = x_pos - 16 * 10; x < x_pos + 16 * 10; x++)
+      PutPixel(x - (x_pos - 16 * 10), y - (y_pos - 16 * 10), screen.GetPixel(x, y));
+}
+
+void Image::ChangeSize(int a_width, int a_height, int a_channels)
+{
+  delete data;
+  data = new Pixel[a_width * a_height]{};
+
+  if(data != nullptr)
+  {
+    width = a_width;
+    height = a_height;
+    size = a_width * a_height * a_channels;
+    channels = a_channels;
+    self_allocated = true;
+  }
 }
 
 /*Image::~Image()

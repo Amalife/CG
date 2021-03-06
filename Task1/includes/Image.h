@@ -28,6 +28,8 @@ struct Image
   void  PutPixel(int x, int y, const Pixel &pix) { data[width* y + x] = pix; }
   void  Draw(Image &screen, float k);
   void  Read_img(const std::string &a_path);
+  void  TakePix(int x_pos, int y_pos, Image &screen);
+  void  ChangeSize(int a_width, int a_height, int a_channels);
 
   //~Image();
 

@@ -14,6 +14,8 @@ public:
     bool screen_next_lvl = false;
     bool screen_end_lvl = false;
     bool screen_dead = false;
+    int height = 0;
+    int width = 0;
     Image backup;
 
     GameMap() {}

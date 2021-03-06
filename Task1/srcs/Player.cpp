@@ -29,16 +29,16 @@ void Player::CheckAround(std::vector<GameObject> &chosen)
   for (GameObject &obj : chosen)
   {
     if (obj.position.y >= coords.y && obj.position.y <= coords.y + Width() && 
-        coords.x >= obj.position.x - obj.Width()/2 && coords.x <= obj.position.x + obj.Width()/2)
+        coords.x >= obj.position.x - 3 * obj.Width()/4 && coords.x <= obj.position.x + 3 * obj.Width()/4)
       obstacle[0] = true;
     if (coords.y >= obj.position.y && coords.y <= obj.position.y + obj.Height() && 
-        coords.x >= obj.position.x - obj.Width()/2 && coords.x <= obj.position.x + obj.Width()/2)
+        coords.x >= obj.position.x - 3 * obj.Width()/4 && coords.x <= obj.position.x + 3 * obj.Width()/4)
       obstacle[1] = true;
     if (coords.x >= obj.position.x && coords.x <= obj.position.x + obj.Width() && 
-        coords.y >= obj.position.y - obj.Height()/2 && coords.y <= obj.position.y + obj.Height()/2)
+        coords.y >= obj.position.y - 3 * obj.Height()/4 && coords.y <= obj.position.y + 3 * obj.Height()/4)
       obstacle[2] = true;
     if (obj.position.x >= coords.x && obj.position.x <= coords.x + Width() && 
-        coords.y >= obj.position.y - obj.Height()/2 && coords.y <= obj.position.y + obj.Height()/2)
+        coords.y >= obj.position.y - 3 * obj.Height()/4 && coords.y <= obj.position.y + 3 * obj.Height()/4)
       obstacle[3] = true;
   }
 }

@@ -36,9 +36,9 @@ void GameMap::loadFile(const char *path, Point *start, std::vector<Image> &anima
 
 void GameMap::initMap(std::vector<std::vector<char>> tile_data, Point *start, std::vector<Image> &anima)
 {
-    int height = tile_data.size();
-    int width = tile_data[0].size();
-    //std::cout << "width = " << width << " height = " << height;
+    height = tile_data.size();
+    width = tile_data[0].size();
+    //std::cout << "width = " << width << " height = " << height << std::endl;
 
     for (int y = 0; y < height; y++)
     {
@@ -93,7 +93,7 @@ void GameMap::initMap(std::vector<std::vector<char>> tile_data, Point *start, st
                 obj.height = obj.Height();
                 obj.width = obj.Width();
                 obj.is_door = true;
-                this->Objects.push_back(obj); 
+                this->Objects.push_back(obj);
             }
             else if (tile_data[y][x] == '@')
             {
